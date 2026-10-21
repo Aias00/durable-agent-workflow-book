@@ -1,0 +1,86 @@
+{
+  "tested_at_utc": "2026-10-21T11:01:11.480589+00:00",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
+  "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
+  "model_file": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
+  "model_sha256": "74a4da8c9fdbcd15bd1f6d01d621410d31c6fc00986f5eb687824e7b93d7a9db",
+  "model_bytes": 491400032,
+  "license": "Apache-2.0",
+  "engine_release": "b11789",
+  "engine_version": "version: 0.7.0-dev (build 11789, commit b531e4c74)\nbuilt with AppleClang 21.0.0.21000101 for Darwin arm64",
+  "engine_binary_sha256": "67b08224c590a337389e8b46a8d6e49902b959be9922e572ffd81645bac1b084",
+  "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+  "cpu_only": true,
+  "threads": 2,
+  "temperature": 0,
+  "seed": 42,
+  "schema_constrained": false,
+  "setup_note": "The initial constrained-schema attempt failed in llama.cpp b11789 sampler initialization; this report uses unconstrained model generation and independent strict Go admission.",
+  "cases": [
+    {
+      "prompt": "Create a plan to issue 500 CNY minor units to account-a.",
+      "proposal": {
+        "version": 1,
+        "action": "issue_credit",
+        "account": "account-a",
+        "amount_minor": 500,
+        "currency": "CNY"
+      },
+      "expected_account": "account-a",
+      "expected_amount_minor": 500,
+      "matches_authored_request": true,
+      "admission": {
+        "admitted": true,
+        "fingerprint": "3836c35285ea461d0f13e5c27efe7a206bcfe0434ebab4f8f81673446cd1d768",
+        "next_required_stage": "persist_then_wait_for_approval",
+        "plan": {
+          "version": 1,
+          "action": "issue_credit",
+          "account": "account-a",
+          "amount_minor": 500,
+          "currency": "CNY",
+          "idempotent": true
+        }
+      },
+      "elapsed_seconds": 2.407,
+      "generated_stdout": "\n\nLoading model... \n\n▄▄ ▄▄\n██ ██\n██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄\n██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██\n██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀\n                                    ██    ██\n                                    ▀▀    ▀▀\n\nbuild      : b11789-b531e4c74\nmodel      : /Volumes/data/durable-agent-workflow-book/.tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf\nftype      : Q4_K - Medium\nmodalities : text\nusing custom system prompt\n\navailable commands:\n  /exit or Ctrl+C     stop or exit\n  /regen              regenerate the last response\n  /clear              clear the chat history\n  /read <file>        add a text file\n  /glob <pattern>     add text files using globbing pattern\n\n\n\n> Create a plan to issue 500 CNY minor units to account-a.\n{\"version\":1,\"action\":\"issue_credit\",\"account\":\"account-a\",\"amount_minor\":500,\"currency\":\"CNY\"}\n\n\nExiting...\n",
+      "generated_stdout_sha256": "67b2f2d629ea407e64684e895ad2f52352eab24eb7237c61d071c082f529e859"
+    },
+    {
+      "prompt": "Create a plan to issue 1200 CNY minor units to account-b.",
+      "proposal": {
+        "version": 1,
+        "action": "issue_credit",
+        "account": "account-b",
+        "amount_minor": 1200,
+        "currency": "CNY"
+      },
+      "expected_account": "account-b",
+      "expected_amount_minor": 1200,
+      "matches_authored_request": true,
+      "admission": {
+        "admitted": true,
+        "fingerprint": "e9a7edd161688b7526930737ed4397d16a54fb1dfa53216a3e2c6134add88a9f",
+        "next_required_stage": "persist_then_wait_for_approval",
+        "plan": {
+          "version": 1,
+          "action": "issue_credit",
+          "account": "account-b",
+          "amount_minor": 1200,
+          "currency": "CNY",
+          "idempotent": true
+        }
+      },
+      "elapsed_seconds": 1.396,
+      "generated_stdout": "\n\nLoading model... \n\n▄▄ ▄▄\n██ ██\n██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄\n██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██\n██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀\n                                    ██    ██\n                                    ▀▀    ▀▀\n\nbuild      : b11789-b531e4c74\nmodel      : /Volumes/data/durable-agent-workflow-book/.tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf\nftype      : Q4_K - Medium\nmodalities : text\nusing custom system prompt\n\navailable commands:\n  /exit or Ctrl+C     stop or exit\n  /regen              regenerate the last response\n  /clear              clear the chat history\n  /read <file>        add a text file\n  /glob <pattern>     add text files using globbing pattern\n\n\n\n> Create a plan to issue 1200 CNY minor units to account-b.\n{\"version\":1,\"action\":\"issue_credit\",\"account\":\"account-b\",\"amount_minor\":1200,\"currency\":\"CNY\"}\n\n\nExiting...\n",
+      "generated_stdout_sha256": "0cbddc94cced1dbd670885868d8417445b5e3f4c6096af6a7da3486869d0e309"
+    }
+  ],
+  "limitations": [
+    "Two author-constructed requests, not a business-quality benchmark or model ranking.",
+    "Schema constrains syntax and permitted fields, not semantic correctness.",
+    "The CLI wrapper stdout is scanned for exactly one candidate object; only that candidate is sent to strict Go admission.",
+    "Go admission is stateless: it does not persist a workflow, approve or execute a business effect.",
+    "Workflow crash experiments are separate deterministic tests against real PostgreSQL and HTTP."
+  ]
+}

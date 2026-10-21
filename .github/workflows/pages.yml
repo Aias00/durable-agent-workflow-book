@@ -1,0 +1,135 @@
+name: Build, verify and publish book
+on:
+  push:
+    branches: [main]
+    paths:
+      - book/**
+      - lab/**
+      - cmd/**
+      - experiments/**
+      - scripts/**
+      - web/**
+      - epub/**
+      - go.mod
+      - go.sum
+      - LICENSE
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: book-pages
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres@sha256:a63c1ea3f6a3a5a1621f97d2aba3b30faecfab4224c1b0000cc85ced57bb1939
+        env:
+          POSTGRES_USER: book
+          POSTGRES_PASSWORD: book-lab-only
+          POSTGRES_DB: book
+        ports:
+          - 25432:5432
+        options: >-
+          --health-cmd "pg_isready -U book -d book"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      BOOK_LAB_DSN: postgres://book:book-lab-only@127.0.0.1:25432/book?sslmode=disable
+      BOOK_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.3'
+          cache: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: r-lib/actions/setup-pandoc@v2
+        with:
+          pandoc-version: '3.12.1'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Record actual PostgreSQL and image
+        run: |
+          mkdir -p evidence
+          psql "$BOOK_LAB_DSN" -Atc 'SELECT version()' > evidence/postgresql-version.txt
+          task_image_id=$(docker inspect --format '{{.Image}}' '${{ job.services.postgres.id }}')
+          docker image inspect --format '{{index .RepoDigests 0}}' "$task_image_id" > evidence/postgres-image-digest.txt
+      - name: Run real PostgreSQL, HTTP and process-failure experiments
+        run: |
+          go vet ./...
+          go test -race -count=1 -json ./... | tee evidence/tests.jsonl
+      - name: Collect actual evidence and reject skipped integrations
+        if: always()
+        run: python3 lab/collect_evidence.py evidence
+      - name: Record real CPU model generation and independent Go admission
+        run: |
+          sh experiments/model/fetch.sh
+          task_model_cli=$(python3 -c 'from pathlib import Path; p=list(Path(".tools/model/runtime").rglob("llama-cli")); assert len(p)==1; print(p[0])')
+          python3 experiments/model/run.py --binary "$task_model_cli" --model .tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf
+          cp evidence/runtime.json book/validation.json
+      - name: Build EPUB and reading site from the same manuscript
+        run: python3 scripts/build.py
+      - name: Verify full source, EPUB, website and experiment archive
+        run: python3 scripts/verify.py
+      - name: Validate EPUB 3
+        run: sh scripts/epubcheck.sh
+      - name: Execute the downloaded experiment layout independently
+        run: |
+          task_archive_dir="$RUNNER_TEMP/workflow-archive"
+          python3 -m zipfile -e site/downloads/lab.zip "$task_archive_dir"
+          go -C "$task_archive_dir" test -race -count=1 -json ./... > evidence/archive-tests.jsonl
+          python3 - <<'PY'
+          import json
+          events=[json.loads(line) for line in open('evidence/archive-tests.jsonl')]
+          assert not [e for e in events if e['Action'] in ('fail','skip')]
+          assert len([e for e in events if e['Action']=='pass' and e.get('Test')])>=28
+          PY
+      - name: Install browser tools
+        run: |
+          npm install --no-save --package-lock=false playwright@1.64.1
+          npx playwright install --with-deps chromium
+      - name: Verify all reading interactions and mobile chapters
+        run: |
+          python3 -m http.server 8784 --bind 127.0.0.1 --directory site > /tmp/book-http.log 2>&1 &
+          node scripts/browser-check.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: workflow-runtime-evidence
+          path: |
+            evidence/
+            book/model-experiment.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: book-downloads
+          path: site/downloads/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+  deploy:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/deploy-pages@v4
+        id: deploy

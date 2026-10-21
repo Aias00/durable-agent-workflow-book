@@ -19,7 +19,7 @@ go test -race -count=1 -json ./... > tests.jsonl
 
 Each database test creates a fresh `wf_<16 hexadecimal characters>` schema. Only its creator drops that schema. Worker subprocesses open the existing schema and cannot drop it through `Store.Close`. Never point the lab at a production database. The database primary, fallback hosts, and tool URL/dial destination are restricted to loopback. These development passwords and the fixed HTTP token are not a production authentication system.
 
-Without `BOOK_LAB_DSN`, integration tests explicitly skip: a green local compile is not integration evidence. The Actions collector rejects every skip or failure and retains raw `tests.jsonl`, actual server version, actual image digest, and `runtime.json` with test outcomes and `BOOK_OBSERVATION` values. Artifact name: `workflow-lab-evidence`. The CI command is exactly `go test -race -count=1 -json ./...`.
+Without `BOOK_LAB_DSN`, integration tests explicitly skip: a green local compile is not integration evidence. The Actions collector rejects every skip or failure and retains raw `tests.jsonl`, actual server version, actual image digest, and `runtime.json` with test outcomes and `BOOK_OBSERVATION` values. The complete publication workflow preserves artifact `workflow-runtime-evidence` (the earlier standalone lab used `workflow-lab-evidence`). The CI command is exactly `go test -race -count=1 -json ./...`.
 
 Run an individual experiment with `-run`, for example:
 

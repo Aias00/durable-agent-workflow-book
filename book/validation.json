@@ -1,0 +1,342 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "timestamp_utc": "2026-10-21T10:40:44.257316+00:00",
+  "commit": "5e07ffe1a0752d51924488dc85fea4c494e8cc3d",
+  "run_url": "https://github.com/Aias00/durable-agent-workflow-book/actions/runs/39586231582",
+  "go": "go version go1.24.3 linux/amd64",
+  "postgresql": "PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
+  "postgres_image_digest": "postgres@sha256:a63c1ea3f6a3a5a1621f97d2aba3b30faecfab4224c1b0000cc85ced57bb1939",
+  "command": "go test -race -count=1 -json ./...",
+  "integration_dsn_configured": true,
+  "tests": {
+    "TestProposalCannotGrantAuthority": "pass",
+    "TestOperationKeyHasUnambiguousTenantScope": "pass",
+    "TestOperationIdentityRejectsParameterDrift": "pass",
+    "TestApprovalBindsTenantRoleAndFingerprint": "pass",
+    "TestTwoClaimersCannotOwnOneWorkflow": "pass",
+    "TestHeartbeatCannotReviveAnExpiredLease": "pass",
+    "TestExpiredOwnerCannotCommitAnOldResult": "pass",
+    "TestCommitReplyLostBecomesUnknownThenReconciled": "pass",
+    "TestNonIdempotentUnknownNeverAutomaticallyReplays": "pass",
+    "TestTwoWorkerProcessesClaimExactlyOne": "pass",
+    "TestSIGKILLAfterClaimQueries404AndRestarts": "pass",
+    "TestSIGKILLAfterToolReconcilesExistingEffect": "pass",
+    "TestSIGKILLNonIdempotentRequiresManualReview/after_claim": "pass",
+    "TestSIGKILLNonIdempotentRequiresManualReview/after_tool": "pass",
+    "TestSIGKILLNonIdempotentRequiresManualReview": "pass",
+    "TestApprovalExpiresWhileQueued": "pass",
+    "TestApprovalExpiresAfterClaim": "pass",
+    "TestCancelBeforeDispatch": "pass",
+    "TestCancelAfterEffectPreservesSucceededFact": "pass",
+    "TestTrusted429UsesTimedRetry": "pass",
+    "TestTrusted429ExhaustsPersistentBudget": "pass",
+    "TestUnknown404UsesOriginalKeyAndStopsAtBudget": "pass",
+    "TestPersistedVersionTwoRejectedByOldWorker": "pass",
+    "TestTerminalTransactionRollsBackButEffectCanBeReconciled": "pass",
+    "TestReceiptFingerprintMismatchCannotCompleteOrReconcile": "pass",
+    "TestEventsExcludeRawSensitiveInputs": "pass",
+    "TestCancellationDuringLookupCannotRequeue": "pass",
+    "TestLoopbackBoundariesRejectRemoteTargets": "pass"
+  },
+  "expected_top_level_tests": [
+    "TestApprovalBindsTenantRoleAndFingerprint",
+    "TestApprovalExpiresAfterClaim",
+    "TestApprovalExpiresWhileQueued",
+    "TestCancelAfterEffectPreservesSucceededFact",
+    "TestCancelBeforeDispatch",
+    "TestCancellationDuringLookupCannotRequeue",
+    "TestCommitReplyLostBecomesUnknownThenReconciled",
+    "TestEventsExcludeRawSensitiveInputs",
+    "TestExpiredOwnerCannotCommitAnOldResult",
+    "TestHeartbeatCannotReviveAnExpiredLease",
+    "TestLoopbackBoundariesRejectRemoteTargets",
+    "TestNonIdempotentUnknownNeverAutomaticallyReplays",
+    "TestOperationIdentityRejectsParameterDrift",
+    "TestOperationKeyHasUnambiguousTenantScope",
+    "TestPersistedVersionTwoRejectedByOldWorker",
+    "TestProposalCannotGrantAuthority",
+    "TestReceiptFingerprintMismatchCannotCompleteOrReconcile",
+    "TestSIGKILLAfterClaimQueries404AndRestarts",
+    "TestSIGKILLAfterToolReconcilesExistingEffect",
+    "TestSIGKILLNonIdempotentRequiresManualReview",
+    "TestTerminalTransactionRollsBackButEffectCanBeReconciled",
+    "TestTrusted429ExhaustsPersistentBudget",
+    "TestTrusted429UsesTimedRetry",
+    "TestTwoClaimersCannotOwnOneWorkflow",
+    "TestTwoWorkerProcessesClaimExactlyOne",
+    "TestUnknown404UsesOriginalKeyAndStopsAtBudget"
+  ],
+  "missing_tests": [],
+  "source_sha256": {
+    "cmd/worker/main.go": "10ba8025a73a163ddf0b8111527981527f9a80143ab673eb1a5b15cc2aacea33",
+    "go.mod": "da54299806e3762c1f38ac1a0dd076429ab5739c44733145cbbcb84a6cfce6b1",
+    "go.sum": "4e7e05768d607a1cc09d1dbe92d138751e9111200e8eadf2be5d7c99b189e834",
+    "lab/lab_test.go": "0b8c166b842b2bde7dab4edcf2a9f33c4ede7a7e1e7281c58069824c9a1bc873",
+    "lab/planner.go": "c3726bf23529e1a923807530fcb476964730197fc16c9f09f4a44f38068c2069",
+    "lab/schema.sql": "d28640e34637857dadcda2f8e0a12578d7058ac62ce17719195d1e25e828e8c8",
+    "lab/store.go": "8c447a9ad8e2ecedd45f2adf1420702f3dd23813b5162676c3288fc604ac4912",
+    "lab/tool.go": "bbbd58cf690804782e0c85d79be9a90a0e91dd892215c48142a9085863c71d8b",
+    "lab/worker.go": "d9fedb035307894984fb0bd10f24156deaed69a925004e4a9e69cb16f0d97907"
+  },
+  "package_failures": [],
+  "observations": [
+    {
+      "test": "TestProposalCannotGrantAuthority",
+      "observation": {
+        "authority_fields_rejected": 5,
+        "capability_from_registry": true
+      }
+    },
+    {
+      "test": "TestOperationKeyHasUnambiguousTenantScope",
+      "observation": {
+        "operation_key_stable": true,
+        "tenant_scope_unambiguous": true
+      }
+    },
+    {
+      "test": "TestOperationIdentityRejectsParameterDrift",
+      "observation": {
+        "drift_rejected": true,
+        "same_workflow": true,
+        "state": "waiting_approval"
+      }
+    },
+    {
+      "test": "TestApprovalBindsTenantRoleAndFingerprint",
+      "observation": {
+        "state": "ready",
+        "wrong_fingerprint_rejected": true,
+        "wrong_role_rejected": true,
+        "wrong_tenant_rejected": true
+      }
+    },
+    {
+      "test": "TestTwoClaimersCannotOwnOneWorkflow",
+      "observation": {
+        "concurrent_claimers": 2,
+        "fence": 1,
+        "successful_claims": 1
+      }
+    },
+    {
+      "test": "TestHeartbeatCannotReviveAnExpiredLease",
+      "observation": {
+        "expired_owner_rejected": true,
+        "lease_expiry": "SQL-injected",
+        "live_lease_extended": true
+      }
+    },
+    {
+      "test": "TestExpiredOwnerCannotCommitAnOldResult",
+      "observation": {
+        "effects": 1,
+        "new_fence": 4,
+        "old_fence": 1,
+        "state": "succeeded"
+      }
+    },
+    {
+      "test": "TestCommitReplyLostBecomesUnknownThenReconciled",
+      "observation": {
+        "after_lookup": "succeeded",
+        "after_reply_loss": "unknown",
+        "effects": 1,
+        "post_calls": 1
+      }
+    },
+    {
+      "test": "TestNonIdempotentUnknownNeverAutomaticallyReplays",
+      "observation": {
+        "effects": 1,
+        "post_calls": 1,
+        "state": "unknown"
+      }
+    },
+    {
+      "test": "TestTwoWorkerProcessesClaimExactlyOne",
+      "observation": {
+        "claims": 1,
+        "effects": 1,
+        "os_processes": 2,
+        "state": "succeeded"
+      }
+    },
+    {
+      "test": "TestSIGKILLAfterClaimQueries404AndRestarts",
+      "observation": {
+        "attempts": 2,
+        "effects": 1,
+        "lease_expiry": "elapsed PostgreSQL clock; 3s lease",
+        "post_calls": 1,
+        "signal": "SIGKILL",
+        "state": "succeeded",
+        "window": "after_claim"
+      }
+    },
+    {
+      "test": "TestSIGKILLAfterToolReconcilesExistingEffect",
+      "observation": {
+        "attempts": 1,
+        "effects": 1,
+        "lease_expiry": "elapsed PostgreSQL clock; 3s lease",
+        "post_calls": 1,
+        "signal": "SIGKILL",
+        "state": "succeeded",
+        "window": "after_tool"
+      }
+    },
+    {
+      "test": "TestSIGKILLNonIdempotentRequiresManualReview/after_claim",
+      "observation": {
+        "effects": 0,
+        "lease_expiry": "elapsed PostgreSQL clock; 3s lease",
+        "manual_review": true,
+        "post_calls": 0,
+        "signal": "SIGKILL",
+        "state": "unknown",
+        "window": "after_claim"
+      }
+    },
+    {
+      "test": "TestSIGKILLNonIdempotentRequiresManualReview/after_tool",
+      "observation": {
+        "effects": 1,
+        "lease_expiry": "elapsed PostgreSQL clock; 3s lease",
+        "manual_review": true,
+        "post_calls": 1,
+        "signal": "SIGKILL",
+        "state": "unknown",
+        "window": "after_tool"
+      }
+    },
+    {
+      "test": "TestApprovalExpiresWhileQueued",
+      "observation": {
+        "expiry": "SQL-injected before claim",
+        "post_calls": 0,
+        "state": "waiting_approval"
+      }
+    },
+    {
+      "test": "TestApprovalExpiresAfterClaim",
+      "observation": {
+        "effects": 0,
+        "expiry": "SQL-injected after claim",
+        "state": "waiting_approval"
+      }
+    },
+    {
+      "test": "TestCancelBeforeDispatch",
+      "observation": {
+        "before_dispatch": "cancelled",
+        "effects": 0,
+        "queued": "cancelled"
+      }
+    },
+    {
+      "test": "TestCancelAfterEffectPreservesSucceededFact",
+      "observation": {
+        "cancel_requested": true,
+        "compensated": false,
+        "effects": 1,
+        "state": "succeeded"
+      }
+    },
+    {
+      "test": "TestTrusted429UsesTimedRetry",
+      "observation": {
+        "attempts": 2,
+        "backoff_ms": 250,
+        "effects": 1,
+        "post_calls": 2,
+        "timer": "elapsed PostgreSQL clock"
+      }
+    },
+    {
+      "test": "TestTrusted429ExhaustsPersistentBudget",
+      "observation": {
+        "attempts": 3,
+        "effects": 0,
+        "persistent_budget": 3,
+        "post_calls": 3,
+        "state": "failed"
+      }
+    },
+    {
+      "test": "TestUnknown404UsesOriginalKeyAndStopsAtBudget",
+      "observation": {
+        "attempts": 3,
+        "effects": 0,
+        "lookup": "HTTP 404",
+        "original_key_preserved": true,
+        "persistent_budget": 3,
+        "state": "unknown"
+      }
+    },
+    {
+      "test": "TestPersistedVersionTwoRejectedByOldWorker",
+      "observation": {
+        "persisted_version": 2,
+        "post_calls": 0,
+        "state": "incompatible",
+        "worker_version": 1
+      }
+    },
+    {
+      "test": "TestTerminalTransactionRollsBackButEffectCanBeReconciled",
+      "observation": {
+        "after_reconcile": "succeeded",
+        "after_rollback": "running",
+        "completed_events": 0,
+        "effects": 1,
+        "fault": "events CHECK rejects completed",
+        "lease_expiry": "SQL-injected",
+        "post_calls": 1,
+        "result_rolled_back": true
+      }
+    },
+    {
+      "test": "TestReceiptFingerprintMismatchCannotCompleteOrReconcile",
+      "observation": {
+        "completion_rejected": true,
+        "effects": 1,
+        "reconciliation_rejected": true,
+        "state": "unknown"
+      }
+    },
+    {
+      "test": "TestEventsExcludeRawSensitiveInputs",
+      "observation": {
+        "events_checked": 4,
+        "raw_sensitive_markers_found": 0,
+        "scope": "events kind/detail; workflow and tool ledger intentionally retain business fields"
+      }
+    },
+    {
+      "test": "TestCancellationDuringLookupCannotRequeue",
+      "observation": {
+        "cancel_during": "HTTP lookup",
+        "cancel_requested": true,
+        "effects": 0,
+        "lookup": "404",
+        "state": "unknown"
+      }
+    },
+    {
+      "test": "TestLoopbackBoundariesRejectRemoteTargets",
+      "observation": {
+        "database_primary_and_fallback_restricted": true,
+        "localhost_resolution_pinned": true,
+        "tool_endpoint_restricted": true
+      }
+    }
+  ],
+  "limits": [
+    "One side-effect node; not a general workflow engine or exactly-once system.",
+    "Workflow and tool ledger share one PostgreSQL instance but use separate transactions.",
+    "SIGKILL experiments wait for the actual three-second database lease; other boundary tests label SQL-injected expiry.",
+    "Loopback development credentials, authoritative lab lookup, no multi-cluster availability or provider-authentication claim."
+  ]
+}

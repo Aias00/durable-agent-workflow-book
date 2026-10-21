@@ -1,0 +1,78 @@
+[
+  {
+    "id": "pg-locks",
+    "title": "PostgreSQL 17: Explicit Locking",
+    "url": "https://www.postgresql.org/docs/17/explicit-locking.html",
+    "checked_at_utc": "2026-10-21T10:59:09.684513+00:00",
+    "source_sha256": "cce2f9f92449f15fcb9927c23f164701652ed352470838d5db5a1bd930a77193",
+    "scope_note": "行级锁与事务结束释放；不据此宣称应用租约会终止旧进程。"
+  },
+  {
+    "id": "pg-select",
+    "title": "PostgreSQL 17: SELECT",
+    "url": "https://www.postgresql.org/docs/17/sql-select.html",
+    "checked_at_utc": "2026-10-21T10:59:09.685289+00:00",
+    "source_sha256": "97941a4e930bac34a69b3db574e0e482123e1d225cdf34b6331aaa6f0edfabcc",
+    "scope_note": "SKIP LOCKED会跳过锁定行并形成不一致视图，适用于队列式竞争，不保证公平与严格FIFO。"
+  },
+  {
+    "id": "pg-isolation",
+    "title": "PostgreSQL 17: Transaction Isolation",
+    "url": "https://www.postgresql.org/docs/17/transaction-iso.html",
+    "checked_at_utc": "2026-10-21T10:59:09.686408+00:00",
+    "source_sha256": "e3475df0c76b214dbda0bc681015099763b83778e1355e17ee7b908e6fd38a26",
+    "scope_note": "Read Committed的命令快照与并发更新行为；唯一约束后的读取需结合隔离级别。"
+  },
+  {
+    "id": "pg-time",
+    "title": "PostgreSQL 17: Date/Time Functions",
+    "url": "https://www.postgresql.org/docs/17/functions-datetime.html",
+    "checked_at_utc": "2026-10-21T10:59:09.686972+00:00",
+    "source_sha256": "20965f1539d658c525d403ad548d697cfcb8967f4faf8f81127373572f33821d",
+    "scope_note": "clock_timestamp返回调用瞬间的实际时间，与事务起始时刻函数区分。"
+  },
+  {
+    "id": "go-context",
+    "title": "Go package context",
+    "url": "https://pkg.go.dev/context",
+    "checked_at_utc": "2026-10-21T10:59:09.687649+00:00",
+    "source_sha256": "cb69b69010226c3ab9917a26f1bcfdd3d356b7491f330960d921561b2659bc68",
+    "scope_note": "取消传播是停止工作的信号，不能自动撤销远程已提交的业务效果。"
+  },
+  {
+    "id": "go-dbsql",
+    "title": "Go package database/sql",
+    "url": "https://pkg.go.dev/database/sql",
+    "checked_at_utc": "2026-10-21T10:59:09.688443+00:00",
+    "source_sha256": "211b3a3f0b0d1d18663ed5b5e1dd296304bdb488f330dd63fdaf5b31b7d6b5a4",
+    "scope_note": "Tx与连接池生命周期；本地事务不自动覆盖外部工具事务。"
+  },
+  {
+    "id": "sqs-visibility",
+    "title": "Amazon SQS visibility timeout",
+    "url": "https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-visibility-timeout.html",
+    "checked_at_utc": "2026-10-21T10:59:09.689807+00:00",
+    "source_sha256": "bac1ddd7349065223d1a93a3b864c27b9153abfd27a4531ed358972f10ed8510",
+    "scope_note": "可见性超时与至少一次投递背景；未使用SQS，未声称重现其服务实现。"
+  },
+  {
+    "id": "temporal-durability",
+    "title": "Temporal Workflow Execution",
+    "url": "https://docs.temporal.io/workflow-execution",
+    "checked_at_utc": "2026-10-21T10:59:09.690217+00:00",
+    "source_sha256": "8acc3ff45680ecba521e547f0ed20d02b11c4809e48add91dc425c309c73f51a",
+    "scope_note": "事件历史与恢复/重放的比较背景；随书内核不实现完整Temporal或其确定性重放协议。"
+  },
+  {
+    "id": "qwen-model",
+    "title": "Qwen2.5-0.5B-Instruct-GGUF model repository",
+    "url": "https://huggingface.co/Qwen/Qwen2.5-0.5B-Instruct-GGUF/tree/9217f5db79a29953eb74d5343926648285ec7e67",
+    "scope_note": "固定模型revision、GGUF LFS SHA256与Apache-2.0许可；小样本实际CPU生成不作为模型排名。"
+  },
+  {
+    "id": "llama-runtime",
+    "title": "llama.cpp b11789 official release",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/tag/b11789",
+    "scope_note": "官方CPU运行包及发布资产digest；第三方二进制和模型不随书再分发。"
+  }
+]

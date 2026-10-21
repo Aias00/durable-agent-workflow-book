@@ -1,0 +1,1 @@
+{"type":"object","properties":{"version":{"const":1},"action":{"const":"issue_credit"},"account":{"type":"string","enum":["account-a","account-b"]},"amount_minor":{"type":"integer","minimum":1,"maximum":10000},"currency":{"const":"CNY"}},"required":["version","action","account","amount_minor","currency"],"additionalProperties":false}

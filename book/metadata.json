@@ -1,0 +1,17 @@
+{
+  "title": "长任务 Agent 的可靠执行：状态、审批与故障恢复",
+  "subtitle": "从一次工具调用到可以恢复的业务流程",
+  "author": "Aias00",
+  "lang": "zh-CN",
+  "repository": "https://github.com/Aias00/durable-agent-workflow-book",
+  "slug": "durable-agent-workflow-book",
+  "version": "1.0.0",
+  "description": "通过真实PostgreSQL、多worker、HTTP工具与进程崩溃实验，理解持久状态、审批、租约、幂等和执行结果未知。",
+  "rights": "© 2026 Aias00. 保留所有权利。",
+  "cover_lines": [
+    "长任务 Agent",
+    "可靠执行"
+  ],
+  "cover_label": "DURABLE AGENT ENGINEERING",
+  "include_code": true
+}
