@@ -83,11 +83,27 @@ func Open(ctx context.Context, schema string, create bool) (*Store, error) {
 	if err != nil {
 		return nil, err
 	}
-	if cfg.Host != "localhost" {
-		ip := net.ParseIP(cfg.Host)
-		if ip == nil || !ip.IsLoopback() {
-			return nil, errors.New("lab only permits a loopback PostgreSQL host")
+	loopback := func(host string) bool {
+		ip := net.ParseIP(host)
+		return host == "localhost" || ip != nil && ip.IsLoopback()
+	}
+	if !loopback(cfg.Host) {
+		return nil, errors.New("lab only permits a loopback PostgreSQL host")
+	}
+	for _, fallback := range cfg.Fallbacks {
+		if !loopback(fallback.Host) {
+			return nil, errors.New("lab rejects non-loopback PostgreSQL fallback hosts")
 		}
+	}
+	// Pin localhost resolution as well as checking every pgx failover host.
+	cfg.LookupFunc = func(_ context.Context, host string) ([]string, error) {
+		if host == "localhost" {
+			return []string{"127.0.0.1", "::1"}, nil
+		}
+		if !loopback(host) {
+			return nil, errors.New("non-loopback lookup rejected")
+		}
+		return []string{host}, nil
 	}
 	if !schemaName.MatchString(schema) {
 		return nil, errors.New("invalid isolated schema")
@@ -179,7 +195,7 @@ func (s *Store) Create(ctx context.Context, a Actor, op string, p Plan) (Workflo
 	defer tx.Rollback()
 	raw, _ := json.Marshal(p)
 	id := ID()
-	result, err := tx.ExecContext(ctx, `INSERT INTO workflows(id,tenant,operation,plan,fingerprint,plan_version,state) VALUES($1,$2,$3,$4,$5,$6,'waiting_approval') ON CONFLICT(tenant,operation) DO NOTHING`, id, a.Tenant, op, raw, p.Fingerprint(), p.Version)
+	result, err := tx.ExecContext(ctx, `INSERT INTO workflows(id,tenant,operation,plan,fingerprint,plan_version,max_attempts,state) VALUES($1,$2,$3,$4,$5,$6,$7,'waiting_approval') ON CONFLICT(tenant,operation) DO NOTHING`, id, a.Tenant, op, raw, p.Fingerprint(), p.Version, DefaultMaxAttempts)
 	if err != nil {
 		return Workflow{}, err
 	}

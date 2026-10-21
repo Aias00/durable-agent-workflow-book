@@ -185,7 +185,21 @@ func NewToolClient(base string) (*ToolClient, error) {
 			return nil, errors.New("lab tool must use loopback")
 		}
 	}
-	transport := &http.Transport{DisableKeepAlives: true, ResponseHeaderTimeout: time.Second}
+	transport := &http.Transport{DisableKeepAlives: true, ResponseHeaderTimeout: time.Second,
+		DialContext: func(ctx context.Context, network, address string) (net.Conn, error) {
+			host, port, err := net.SplitHostPort(address)
+			if err != nil {
+				return nil, err
+			}
+			if host == "localhost" {
+				host = "127.0.0.1"
+			}
+			ip := net.ParseIP(host)
+			if ip == nil || !ip.IsLoopback() {
+				return nil, errors.New("non-loopback tool dial rejected")
+			}
+			return (&net.Dialer{}).DialContext(ctx, network, net.JoinHostPort(host, port))
+		}}
 	return &ToolClient{Base: strings.TrimRight(base, "/"), HTTP: &http.Client{Transport: transport, Timeout: 2 * time.Second, CheckRedirect: func(*http.Request, []*http.Request) error { return errors.New("tool redirects disabled") }}}, nil
 }
 func (c *ToolClient) Close() { c.HTTP.CloseIdleConnections() }

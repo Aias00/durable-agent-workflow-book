@@ -23,7 +23,7 @@ jobs:
     timeout-minutes: 12
     services:
       postgres:
-        image: postgres:17
+        image: postgres:17@sha256:a63c1ea3f6a3a5a1621f97d2aba3b30faecfab4224c1b0000cc85ced57bb1939
         env:
           POSTGRES_USER: book
           POSTGRES_PASSWORD: book-lab-only

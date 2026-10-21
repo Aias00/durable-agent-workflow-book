@@ -156,6 +156,7 @@ func TestOperationKeyHasUnambiguousTenantScope(t *testing.T) {
 	if a.EffectKey() != (Workflow{Tenant: "a:b", Operation: "c"}).EffectKey() {
 		t.Fatal("unstable identity")
 	}
+	observe(t, map[string]any{"tenant_scope_unambiguous": true, "operation_key_stable": true})
 }
 func TestOperationIdentityRejectsParameterDrift(t *testing.T) {
 	s := db(t)
@@ -191,6 +192,7 @@ func TestApprovalBindsTenantRoleAndFingerprint(t *testing.T) {
 	if state(t, s, w.ID).State != "ready" {
 		t.Fatal("approval not persisted")
 	}
+	observe(t, map[string]any{"wrong_tenant_rejected": true, "wrong_role_rejected": true, "wrong_fingerprint_rejected": true, "state": "ready"})
 }
 func TestTwoClaimersCannotOwnOneWorkflow(t *testing.T) {
 	s := db(t)
@@ -238,6 +240,7 @@ func TestHeartbeatCannotReviveAnExpiredLease(t *testing.T) {
 	if !errors.Is(s.Heartbeat(context.Background(), *w, time.Second), ErrStale) {
 		t.Fatal("expired owner revived")
 	}
+	observe(t, map[string]any{"live_lease_extended": true, "expired_owner_rejected": true, "lease_expiry": "SQL-injected"})
 }
 func TestExpiredOwnerCannotCommitAnOldResult(t *testing.T) {
 	s := db(t)
@@ -758,4 +761,24 @@ func TestCancellationDuringLookupCannotRequeue(t *testing.T) {
 		t.Fatal(w)
 	}
 	observe(t, map[string]any{"cancel_during": "HTTP lookup", "lookup": "404", "state": w.State, "cancel_requested": w.CancelRequested, "effects": effects(t, s)})
+}
+
+func TestLoopbackBoundariesRejectRemoteTargets(t *testing.T) {
+	for _, dsn := range []string{
+		"postgres://book:book-lab-only@192.0.2.1:25432/book?sslmode=disable",
+		"host=127.0.0.1,192.0.2.1 port=25432,25432 user=book password=book-lab-only dbname=book sslmode=disable",
+	} {
+		t.Setenv("BOOK_LAB_DSN", dsn)
+		if s, err := Open(context.Background(), "wf_"+ID(), false); err == nil {
+			_ = s.Close()
+			t.Fatal("remote database target accepted")
+		}
+	}
+	for _, endpoint := range []string{"http://192.0.2.1:8080", "https://127.0.0.1:8080", "http://user:secret@127.0.0.1:8080", "http://127.0.0.1:8080?token=secret"} {
+		if c, err := NewToolClient(endpoint); err == nil {
+			c.Close()
+			t.Fatal("unsafe tool endpoint accepted")
+		}
+	}
+	observe(t, map[string]any{"database_primary_and_fallback_restricted": true, "tool_endpoint_restricted": true, "localhost_resolution_pinned": true})
 }
