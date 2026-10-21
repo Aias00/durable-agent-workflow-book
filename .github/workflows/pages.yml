@@ -93,11 +93,20 @@ jobs:
           task_archive_dir="$RUNNER_TEMP/workflow-archive"
           python3 -m zipfile -e site/downloads/lab.zip "$task_archive_dir"
           go -C "$task_archive_dir" test -race -count=1 -json ./... > evidence/archive-tests.jsonl
-          python3 - <<'PY'
-          import json
+          python3 - "$task_archive_dir" <<'PY'
+          from collections import Counter
+          from pathlib import Path
+          import json,re,sys
           events=[json.loads(line) for line in open('evidence/archive-tests.jsonl')]
-          assert not [e for e in events if e['Action'] in ('fail','skip')]
-          assert len([e for e in events if e['Action']=='pass' and e.get('Test')])>=28
+          assert not [e for e in events if e['Action']=='fail'], 'An archive package or test failed'
+          assert not [e for e in events if e['Action']=='skip' and e.get('Test')], 'An integration test was skipped'
+          source=(Path(sys.argv[1])/'lab/lab_test.go').read_text()
+          expected_top=set(re.findall(r'^func (Test\w+)\(t \*testing.T\)',source,re.MULTILINE))
+          assert len(expected_top)==26, 'Review the declared top-level experiment inventory'
+          expected=expected_top|{'TestSIGKILLNonIdempotentRequiresManualReview/after_claim','TestSIGKILLNonIdempotentRequiresManualReview/after_tool'}
+          passed=[e['Test'] for e in events if e['Action']=='pass' and e.get('Test')]
+          assert Counter(passed)==Counter(expected), 'Archive experiment names or pass counts differ'
+          print('PASS: independent ZIP ran all 26 top-level experiments and 2 subcases; no failures or test skips. Command-only packages have no tests.')
           PY
       - name: Install browser tools
         run: |
