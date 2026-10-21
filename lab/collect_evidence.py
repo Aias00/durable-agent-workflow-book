@@ -27,7 +27,7 @@ for line in (folder / "tests.jsonl").read_text().splitlines():
 
 expected = sorted(re.findall(r"^func (Test\w+)\(t \*testing.T\)", pathlib.Path("lab/lab_test.go").read_text(), re.MULTILINE))
 missing = sorted(set(expected) - set(tests))
-passed = len(expected) >= 26 and not missing and all(v == "pass" for v in tests.values()) and not package_failures and bool(os.environ.get("BOOK_LAB_DSN"
+passed = len(expected) >= 26 and not missing and all(v == "pass" for v in tests.values()) and not package_failures and bool(os.environ.get("BOOK_LAB_DSN"))
 result = {
     "schema_version": 1,
     "status": "PASS" if passed else "FAIL",
