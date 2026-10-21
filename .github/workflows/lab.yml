@@ -1,0 +1,65 @@
+name: PostgreSQL workflow lab
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'lab/**'
+      - 'cmd/**'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/lab.yml'
+  pull_request:
+    paths:
+      - 'lab/**'
+      - 'cmd/**'
+      - 'go.mod'
+      - 'go.sum'
+      - '.github/workflows/lab.yml'
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: book
+          POSTGRES_PASSWORD: book-lab-only
+          POSTGRES_DB: book
+        ports:
+          - 25432:5432
+        options: >-
+          --health-cmd "pg_isready -U book -d book"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 20
+    env:
+      BOOK_LAB_DSN: postgres://book:book-lab-only@127.0.0.1:25432/book?sslmode=disable
+      BOOK_RUN_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.24.3'
+          cache: true
+      - name: Record actual runtime and image digest
+        run: |
+          mkdir -p evidence
+          psql "$BOOK_LAB_DSN" -Atc 'SELECT version()' > evidence/postgresql-version.txt
+          image_id=$(docker inspect --format '{{.Image}}' '${{ job.services.postgres.id }}')
+          docker image inspect --format '{{index .RepoDigests 0}}' "$image_id" > evidence/postgres-image-digest.txt
+      - name: Run every integration experiment with race detector
+        run: go test -race -count=1 -json ./... | tee evidence/tests.jsonl
+      - name: Collect evidence and reject skipped integration tests
+        if: always()
+        run: python3 lab/collect_evidence.py evidence
+      - name: Preserve raw test stream and machine readable runtime
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: workflow-lab-evidence
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90

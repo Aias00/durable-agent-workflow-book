@@ -1,0 +1,9 @@
+site/
+.build/
+.tools/
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+research/cache/
+.DS_Store
