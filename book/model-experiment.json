@@ -1,5 +1,5 @@
 {
-  "tested_at_utc": "2026-10-21T11:01:11.480589+00:00",
+  "tested_at_utc": "2026-10-21T11:25:27.162824+00:00",
   "model": "Qwen/Qwen2.5-0.5B-Instruct-GGUF",
   "revision": "9217f5db79a29953eb74d5343926648285ec7e67",
   "model_file": "qwen2.5-0.5b-instruct-q4_k_m.gguf",
@@ -7,9 +7,9 @@
   "model_bytes": 491400032,
   "license": "Apache-2.0",
   "engine_release": "b11789",
-  "engine_version": "version: 0.7.0-dev (build 11789, commit b531e4c74)\nbuilt with AppleClang 21.0.0.21000101 for Darwin arm64",
-  "engine_binary_sha256": "67b08224c590a337389e8b46a8d6e49902b959be9922e572ffd81645bac1b084",
-  "platform": "macOS-27.0-arm64-arm-64bit-Mach-O",
+  "engine_version": "version: 0.7.0-dev (build 11789, commit b531e4c74)\nbuilt with GNU 11.4.0 for Linux x86_64",
+  "engine_binary_sha256": "fc4930ab9cefe2efef9a488a54b8d1558094e54187f36248301644bb407ee785",
+  "platform": "Linux-7.0.0-1017-azure-x86_64-with-glibc2.39",
   "cpu_only": true,
   "threads": 2,
   "temperature": 0,
@@ -42,9 +42,9 @@
           "idempotent": true
         }
       },
-      "elapsed_seconds": 2.407,
-      "generated_stdout": "\n\nLoading model... \n\n▄▄ ▄▄\n██ ██\n██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄\n██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██\n██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀\n                                    ██    ██\n                                    ▀▀    ▀▀\n\nbuild      : b11789-b531e4c74\nmodel      : /Volumes/data/durable-agent-workflow-book/.tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf\nftype      : Q4_K - Medium\nmodalities : text\nusing custom system prompt\n\navailable commands:\n  /exit or Ctrl+C     stop or exit\n  /regen              regenerate the last response\n  /clear              clear the chat history\n  /read <file>        add a text file\n  /glob <pattern>     add text files using globbing pattern\n\n\n\n> Create a plan to issue 500 CNY minor units to account-a.\n{\"version\":1,\"action\":\"issue_credit\",\"account\":\"account-a\",\"amount_minor\":500,\"currency\":\"CNY\"}\n\n\nExiting...\n",
-      "generated_stdout_sha256": "67b2f2d629ea407e64684e895ad2f52352eab24eb7237c61d071c082f529e859"
+      "elapsed_seconds": 1.876,
+      "generated_stdout": "\n\nLoading model... \n\n▄▄ ▄▄\n██ ██\n██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄\n██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██\n██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀\n                                    ██    ██\n                                    ▀▀    ▀▀\n\nbuild      : b11789-b531e4c74\nmodel      : /home/runner/work/durable-agent-workflow-book/durable-agent-workflow-book/.tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf\nftype      : Q4_K - Medium\nmodalities : text\nusing custom system prompt\n\navailable commands:\n  /exit or Ctrl+C     stop or exit\n  /regen              regenerate the last response\n  /clear              clear the chat history\n  /read <file>        add a text file\n  /glob <pattern>     add text files using globbing pattern\n\n\n\n> Create a plan to issue 500 CNY minor units to account-a.\n{\"version\":1,\"action\":\"issue_credit\",\"account\":\"account-a\",\"amount_minor\":500,\"currency\":\"CNY\"}\n\n\nExiting...\n",
+      "generated_stdout_sha256": "90b153cb49bd0ec1f24c052335bccecd40a4484f33b76003df392404066f4e1f"
     },
     {
       "prompt": "Create a plan to issue 1200 CNY minor units to account-b.",
@@ -71,9 +71,9 @@
           "idempotent": true
         }
       },
-      "elapsed_seconds": 1.396,
-      "generated_stdout": "\n\nLoading model... \n\n▄▄ ▄▄\n██ ██\n██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄\n██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██\n██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀\n                                    ██    ██\n                                    ▀▀    ▀▀\n\nbuild      : b11789-b531e4c74\nmodel      : /Volumes/data/durable-agent-workflow-book/.tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf\nftype      : Q4_K - Medium\nmodalities : text\nusing custom system prompt\n\navailable commands:\n  /exit or Ctrl+C     stop or exit\n  /regen              regenerate the last response\n  /clear              clear the chat history\n  /read <file>        add a text file\n  /glob <pattern>     add text files using globbing pattern\n\n\n\n> Create a plan to issue 1200 CNY minor units to account-b.\n{\"version\":1,\"action\":\"issue_credit\",\"account\":\"account-b\",\"amount_minor\":1200,\"currency\":\"CNY\"}\n\n\nExiting...\n",
-      "generated_stdout_sha256": "0cbddc94cced1dbd670885868d8417445b5e3f4c6096af6a7da3486869d0e309"
+      "elapsed_seconds": 1.702,
+      "generated_stdout": "\n\nLoading model... \n\n▄▄ ▄▄\n██ ██\n██ ██  ▀▀█▄ ███▄███▄  ▀▀█▄    ▄████ ████▄ ████▄\n██ ██ ▄█▀██ ██ ██ ██ ▄█▀██    ██    ██ ██ ██ ██\n██ ██ ▀█▄██ ██ ██ ██ ▀█▄██ ██ ▀████ ████▀ ████▀\n                                    ██    ██\n                                    ▀▀    ▀▀\n\nbuild      : b11789-b531e4c74\nmodel      : /home/runner/work/durable-agent-workflow-book/durable-agent-workflow-book/.tools/model/qwen2.5-0.5b-instruct-q4_k_m.gguf\nftype      : Q4_K - Medium\nmodalities : text\nusing custom system prompt\n\navailable commands:\n  /exit or Ctrl+C     stop or exit\n  /regen              regenerate the last response\n  /clear              clear the chat history\n  /read <file>        add a text file\n  /glob <pattern>     add text files using globbing pattern\n\n\n\n> Create a plan to issue 1200 CNY minor units to account-b.\n{\"version\":1,\"action\":\"issue_credit\",\"account\":\"account-b\",\"amount_minor\":1200,\"currency\":\"CNY\"}\n\n\nExiting...\n",
+      "generated_stdout_sha256": "e9a47b034afc84a393fa76a1a50dab15c9872091ef952a9eb683b3e6feccda0d"
     }
   ],
   "limitations": [

@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "status": "PASS",
-  "timestamp_utc": "2026-10-21T10:40:44.257316+00:00",
-  "commit": "5e07ffe1a0752d51924488dc85fea4c494e8cc3d",
-  "run_url": "https://github.com/Aias00/durable-agent-workflow-book/actions/runs/39586231582",
+  "timestamp_utc": "2026-10-21T11:25:17.806859+00:00",
+  "commit": "6ce0cbd3d713c7723858e8c858fbfb4be48155a8",
+  "run_url": "https://github.com/Aias00/durable-agent-workflow-book/actions/runs/39591665656",
   "go": "go version go1.24.3 linux/amd64",
   "postgresql": "PostgreSQL 17.11 (Debian 17.11-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit",
   "postgres_image_digest": "postgres@sha256:a63c1ea3f6a3a5a1621f97d2aba3b30faecfab4224c1b0000cc85ced57bb1939",
@@ -69,6 +69,7 @@
   ],
   "missing_tests": [],
   "source_sha256": {
+    "cmd/plancheck/main.go": "f091c7d5ae6f03e3bf40be9bde1059ba5e9eab279c7bfcb002d71cba2b114231",
     "cmd/worker/main.go": "10ba8025a73a163ddf0b8111527981527f9a80143ab673eb1a5b15cc2aacea33",
     "go.mod": "da54299806e3762c1f38ac1a0dd076429ab5739c44733145cbbcb84a6cfce6b1",
     "go.sum": "4e7e05768d607a1cc09d1dbe92d138751e9111200e8eadf2be5d7c99b189e834",
