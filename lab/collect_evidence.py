@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Turn raw go test -json into evidence; fail publication if integration skipped."""
+import hashlib
+import re
 import json
 import os
 import pathlib
@@ -23,7 +25,9 @@ for line in (folder / "tests.jsonl").read_text().splitlines():
     if marker in output:
         observations.append({"test": name, "observation": json.loads(output.split(marker, 1)[1])})
 
-passed = bool(tests) and len(tests) >= 25 and all(v == "pass" for v in tests.values()) and not package_failures and bool(os.environ.get("BOOK_LAB_DSN"))
+expected = sorted(re.findall(r"^func (Test\w+)\(t \*testing.T\)", pathlib.Path("lab/lab_test.go").read_text(), re.MULTILINE))
+missing = sorted(set(expected) - set(tests))
+passed = len(expected) >= 26 and not missing and all(v == "pass" for v in tests.values()) and not package_failures and bool(os.environ.get("BOOK_LAB_DSN"
 result = {
     "schema_version": 1,
     "status": "PASS" if passed else "FAIL",
@@ -36,6 +40,12 @@ result = {
     "command": "go test -race -count=1 -json ./...",
     "integration_dsn_configured": bool(os.environ.get("BOOK_LAB_DSN")),
     "tests": tests,
+    "expected_top_level_tests": expected,
+    "missing_tests": missing,
+    "source_sha256": {
+        str(p): hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in sorted([*pathlib.Path("lab").glob("*.go"), *pathlib.Path("lab").glob("*.sql"), *pathlib.Path("cmd").rglob("*.go"), pathlib.Path("go.mod"), pathlib.Path("go.sum")])
+    },
     "package_failures": package_failures,
     "observations": observations,
     "limits": [
